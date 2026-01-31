@@ -1,0 +1,4 @@
+dataset=datasets/earthquakes.csv
+k=5
+maxIter=100
+epsilon=0.001
