@@ -21,3 +21,7 @@ RUNNING_PID
 
 # Temporary files
 *.log
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
