@@ -1,0 +1,23 @@
+# Compiled output
+target/
+out/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Build tools
+.bsp/
+.project
+.classpath
+.settings/
+
+# Logs and runtime files
+logs/
+RUNNING_PID
+
+# OS files
+.DS_Store
+
+# Temporary files
+*.log

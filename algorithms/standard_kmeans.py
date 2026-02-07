@@ -6,7 +6,7 @@ from utils.math_utils import euclidean_distance
 class StandardKMeans:
 
     def __init__(self, data, k, max_iter, epsilon):
-        self.data = data
+        self.data = np.array(data)
         self.k = k
         self.max_iter = max_iter
         self.epsilon = epsilon
