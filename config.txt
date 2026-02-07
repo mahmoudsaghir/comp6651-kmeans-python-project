@@ -1,4 +1,5 @@
-dataset=datasets/earthquakes.csv
+dataset=datasets/iris.csv
 k=5
 maxIter=100
 epsilon=0.001
+densityRadius=1.0
