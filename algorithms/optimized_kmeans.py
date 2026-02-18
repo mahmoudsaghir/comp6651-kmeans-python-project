@@ -1,5 +1,7 @@
+import time
 import numpy as np
 from utils.math_utils import euclidean_distance
+from utils.plot_utils import plot_clusters_pca, plot_convergence, plot_reassignments
 
 
 class OptimizedKMeans:
@@ -18,22 +20,36 @@ class OptimizedKMeans:
         self.cluster_sums = None
         self.cluster_counts = None
         self.point_density = None
+        self.sse_history = []
+        self.reassignment_history = []
 
     def run(self):
+        start_time = time.time()
+
         self.compute_point_density()
         self.initialize_centroids()
         self.initialize_clusters()
 
         for iteration in range(self.max_iter):
-            self.assign_points()
+            reassigned = self.assign_points()
             shift = self.update_centroids()
             sse = self.compute_sse()
+
+            self.sse_history.append(sse)
+            self.reassignment_history.append(reassigned)
 
             print(f"Iteration {iteration} SSE = {sse}")
 
             if shift < self.epsilon:
                 print(f"Converged at iteration {iteration}")
                 break
+
+        total_runtime = time.time() - start_time
+        print(f"Total runtime for k={self.k}: {total_runtime:.4f} seconds")
+
+        plot_clusters_pca(self.data, self.assignments, self.centroids, "Optimized K-Means Clusters")
+        plot_convergence(self.sse_history, f"Optimized K-Means Convergence (k={self.k})")
+        plot_reassignments(self.reassignment_history, f"Optimized K-Means Reassignments (k={self.k})")
 
     def compute_point_density(self):
         n = len(self.data)
@@ -91,6 +107,8 @@ class OptimizedKMeans:
                 self.centroids[j] = self.cluster_sums[j] / self.cluster_counts[j]
 
     def assign_points(self):
+        reassigned = 0
+
         for i in range(len(self.data)):
             # Find nearest centroid
             min_dist = float("inf")
@@ -102,15 +120,22 @@ class OptimizedKMeans:
                     best_cluster = j
 
             old_cluster = self.assignments[i]
+
             if old_cluster != best_cluster:
+                reassigned += 1
+
                 # Remove from old cluster
                 if old_cluster != -1:
                     self.cluster_sums[old_cluster] -= self.data[i]
                     self.cluster_counts[old_cluster] -= 1
+
                 # Add to new cluster
                 self.cluster_sums[best_cluster] += self.data[i]
                 self.cluster_counts[best_cluster] += 1
+
                 self.assignments[i] = best_cluster
+
+        return reassigned
 
     def update_centroids(self):
         max_shift = 0.0

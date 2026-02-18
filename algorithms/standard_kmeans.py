@@ -1,6 +1,8 @@
+import time
 import random
 import numpy as np
 from utils.math_utils import euclidean_distance
+from utils.plot_utils import plot_clusters_pca, plot_convergence, plot_reassignments
 
 
 class StandardKMeans:
@@ -13,14 +15,20 @@ class StandardKMeans:
 
         self.centroids = None
         self.assignments = [-1] * len(data)
+        self.sse_history = []
+        self.reassignment_history = []
 
     def run(self):
         self.initialize_centroids()
+        start_time = time.time()
 
         for iteration in range(self.max_iter):
-            self.assign_points()
+            reassigned = self.assign_points()
             shift = self.update_centroids()
             sse = self.compute_sse()
+
+            self.sse_history.append(sse)
+            self.reassignment_history.append(reassigned)
 
             print(f"Iteration {iteration} SSE = {sse}")
 
@@ -28,11 +36,20 @@ class StandardKMeans:
                 print(f"Converged at iteration {iteration}")
                 break
 
+        total_runtime = time.time() - start_time
+        print(f"Total runtime for k={self.k}: {total_runtime:.4f} seconds")
+
+        plot_clusters_pca(self.data, self.assignments, self.centroids, "Standard K-Means Clusters")
+        plot_convergence(self.sse_history, f"Standard K-Means Convergence (k={self.k})")
+        plot_reassignments(self.reassignment_history, f"Standard K-Means Reassignments (k={self.k})")
+
     def initialize_centroids(self):
         indices = random.sample(range(len(self.data)), self.k)
         self.centroids = np.array([self.data[i].copy() for i in indices])
 
     def assign_points(self):
+        reassigned = 0
+
         for i in range(len(self.data)):
             min_dist = float("inf")
             best_cluster = -1
@@ -43,7 +60,12 @@ class StandardKMeans:
                     min_dist = dist
                     best_cluster = j
 
+            if self.assignments[i] != best_cluster:
+                reassigned += 1
+
             self.assignments[i] = best_cluster
+
+        return reassigned
 
     def update_centroids(self):
         new_centroids = np.zeros_like(self.centroids)

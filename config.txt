@@ -1,4 +1,4 @@
-dataset=datasets/iris.csv
+dataset=datasets/AI_index_db.csv
 k=5
 maxIter=100
 epsilon=0.001
