@@ -107,7 +107,7 @@ class OptimizedKMeans:
                 self.centroids[j] = self.cluster_sums[j] / self.cluster_counts[j]
 
     def assign_points(self):
-        reassigned = 0
+        reassigned_count = 0
 
         for i in range(len(self.data)):
             # Find nearest centroid
@@ -122,7 +122,7 @@ class OptimizedKMeans:
             old_cluster = self.assignments[i]
 
             if old_cluster != best_cluster:
-                reassigned += 1
+                reassigned_count += 1
 
                 # Remove from old cluster
                 if old_cluster != -1:
@@ -135,7 +135,7 @@ class OptimizedKMeans:
 
                 self.assignments[i] = best_cluster
 
-        return reassigned
+        return reassigned_count
 
     def update_centroids(self):
         max_shift = 0.0
