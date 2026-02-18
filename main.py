@@ -1,5 +1,6 @@
 import time
 
+from algorithms.alternate_kmeans import AlternateKMeans
 from algorithms.optimized_kmeans import OptimizedKMeans
 from config.config import Config
 from data.dataset_loader import load_csv
@@ -23,6 +24,10 @@ def main():
     optimized_kmeans = OptimizedKMeans(data, k, max_iter, epsilon, density_radius)
     print("\nRunning Optimized K-Means:")
     optimized_kmeans.run()
+
+    alternate_kmeans = AlternateKMeans(data, k, max_iter, epsilon)
+    print("\nRunning Alternate K-Means:")
+    alternate_kmeans.run()
 
 if __name__ == "__main__":
     main()

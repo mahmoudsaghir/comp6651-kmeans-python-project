@@ -48,7 +48,7 @@ class StandardKMeans:
         self.centroids = np.array([self.data[i].copy() for i in indices])
 
     def assign_points(self):
-        reassigned = 0
+        reassigned_count = 0
 
         for i in range(len(self.data)):
             min_dist = float("inf")
@@ -61,11 +61,11 @@ class StandardKMeans:
                     best_cluster = j
 
             if self.assignments[i] != best_cluster:
-                reassigned += 1
+                reassigned_count += 1
 
             self.assignments[i] = best_cluster
 
-        return reassigned
+        return reassigned_count
 
     def update_centroids(self):
         new_centroids = np.zeros_like(self.centroids)
