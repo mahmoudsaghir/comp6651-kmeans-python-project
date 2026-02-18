@@ -2,6 +2,18 @@ import csv
 import numpy as np
 
 
+def preprocess_data(data):
+    # Remove rows with NaN values
+    data = data[~np.isnan(data).any(axis=1)]
+
+    # Min-max normalization
+    mins = np.min(data, axis=0)
+    maxs = np.max(data, axis=0)
+    normalized_data = (data - mins) / (maxs - mins)
+
+    return normalized_data
+
+
 def load_csv(file_path):
     data = []
 
@@ -63,4 +75,9 @@ def load_csv(file_path):
 
             data.append(numeric_row)
 
-    return np.array(data, dtype=float)
+    data = np.array(data, dtype=float)
+
+    # Apply preprocessing (missing value handling + normalization)
+    data = preprocess_data(data)
+
+    return data
