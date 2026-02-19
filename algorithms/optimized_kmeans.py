@@ -47,7 +47,7 @@ class OptimizedKMeans:
         total_runtime = time.time() - start_time
         print(f"Total runtime for k={self.k}: {total_runtime:.4f} seconds")
 
-        plot_clusters_pca(self.data, self.assignments, self.centroids, "Optimized K-Means Clusters")
+        plot_clusters_pca(self.data, self.assignments, self.centroids, f"Optimized K-Means Clusters (k={self.k})")
         plot_convergence(self.sse_history, f"Optimized K-Means Convergence (k={self.k})")
         plot_reassignments(self.reassignment_history, f"Optimized K-Means Reassignments (k={self.k})")
 
