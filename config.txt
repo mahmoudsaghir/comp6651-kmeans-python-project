@@ -1,5 +1,5 @@
-dataset=datasets/iris.csv
-k=5
+dataset=datasets/AI_index_db.csv
+k=2
 maxIter=100
 epsilon=0.001
 densityRadius=1.0
