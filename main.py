@@ -7,24 +7,33 @@ from data.dataset_loader import load_csv
 from algorithms.standard_kmeans import StandardKMeans
 
 def main():
+    """
+    Main function to run the K-Means clustering algorithms and compare their performance.
+    """
+    # Load configuration
     config = Config("config.txt")
 
+    # Extract parameters from config
     dataset_path = config.get_string("dataset")
     k = config.get_int("k")
     max_iter = config.get_int("maxIter")
     epsilon = config.get_double("epsilon")
     density_radius = config.get_double("densityRadius")
 
+    # Load dataset
     data = load_csv(dataset_path)
 
+    # Run Standard K-Means
     standard_kmeans = StandardKMeans(data, k, max_iter, epsilon)
     print("Running Standard K-Means:")
     standard_kmeans.run()
 
+    # Run Optimized K-Means
     optimized_kmeans = OptimizedKMeans(data, k, max_iter, epsilon, density_radius)
     print("\nRunning Optimized K-Means:")
     optimized_kmeans.run()
 
+    # Run Alternate K-Means
     alternate_kmeans = AlternateKMeans(data, k, max_iter, epsilon)
     print("\nRunning Alternate K-Means:")
     alternate_kmeans.run()

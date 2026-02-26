@@ -1,8 +1,12 @@
 import csv
 import numpy as np
 
-
 def preprocess_data(data):
+    """
+    Preprocesses the dataset by handling missing values and normalizing the data.
+    :param data: A NumPy array containing the dataset, where rows represent data points and columns represent features.
+    :return: A preprocessed NumPy array with missing values handled and features normalized to the range [0, 1].
+    """
     # Remove rows with NaN values
     data = data[~np.isnan(data).any(axis=1)]
 
@@ -13,8 +17,12 @@ def preprocess_data(data):
 
     return normalized_data
 
-
 def load_csv(file_path):
+    """
+    Loads a CSV file and extracts only the numeric columns, handling missing values by converting them to NaN.
+    :param file_path: The path to the CSV file to be loaded.
+    :return: A NumPy array containing only the numeric columns from the CSV file, with missing values handled as NaN.
+    """
     data = []
 
     with open(file_path, newline="", encoding="utf-8") as f:
